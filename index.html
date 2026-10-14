@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html style="width:100%;height:100%;background-color:black;">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="Eggocraft: EaglercraftX 1.8 tuned for the Intel N100" />
+		<title>Eggocraft</title>
+		<link type="image/png" rel="shortcut icon" href="favicon.png" />
+		<script type="text/javascript">
+			"use strict";
+			(function() {
+				// The WASM-GC client is the faster one, but it needs garbage-collected
+				// WebAssembly and JS Promise Integration (Chrome and Edge 137+).
+				// Every other browser gets the JavaScript client.
+				// Add ?client=js or ?client=wasm to the URL to choose by hand.
+				var wasm = false;
+				try {
+					wasm = typeof WebAssembly === "object"
+						&& typeof WebAssembly.Suspending === "function"
+						&& WebAssembly.validate(new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 95, 1, 120, 0]));
+				} catch (e) {
+				}
+				var client = /[?&]client=(js|wasm)(&|$)/.exec(window.location.search);
+				client = client ? client[1] : (wasm ? "wasm" : "js");
+				window.location.replace(client + "/" + window.location.search + window.location.hash);
+			})();
+		</script>
+	</head>
+	<body style="margin:0px;color:white;font-family:sans-serif;padding:24px;">
+		<noscript>Eggocraft needs JavaScript turned on.</noscript>
+		<p>Loading Eggocraft&hellip; If nothing happens, open the <a style="color:#8cf;" href="wasm/">WASM-GC client</a> or the <a style="color:#8cf;" href="js/">JavaScript client</a>.</p>
+	</body>
+</html>
